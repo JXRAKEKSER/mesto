@@ -1,0 +1,14 @@
+.button-edit {
+    max-width: 24px;
+    max-height: 24px;
+    border: 1px solid #FFFFFF;
+    background-image: url(../../source/images/svg-images/editButton-background.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000000;
+    padding: 0;
+    margin: 0 0 0 18px;
+    grid-column: span 2;
+    grid-row: 1/2;
+    cursor: pointer;
+}

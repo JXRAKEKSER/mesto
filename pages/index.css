@@ -1,0 +1,38 @@
+@import url(../vendor/normalize.css);
+@import url(../fonts/inter.css);
+@import url(../blocks/page/page.css);
+@import url(../blocks/content/content.css);
+
+/* Секция Header */
+
+@import url(../blocks/page/__header/page__header.css);
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+
+/* Секция Profile */
+
+@import url(../blocks/page/__profile/page__profile.css);
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/avatar/avatar.css);
+@import url(../blocks/profile-info/profile-info.css);
+@import url(../blocks/profile/__profile-info/profile__profile-info.css);
+@import url(../blocks/profile-info/__name/profile-info__name.css);
+@import url(../blocks/profile-info/__role/profile-info__role.css);
+@import url(../blocks/button-edit/button-edit.css);
+@import url(../blocks/button-add/button-add.css);
+
+/* Секция Element */
+
+@import url(../blocks/elements/elements.css);
+@import url(../blocks/page/__elements/page__elements.css);
+@import url(../blocks/element/element.css);
+@import url(../blocks/element/__container/element__container.css);
+@import url(../blocks/element/__photo/element__photo.css);
+@import url(../blocks/element/__title/element__title.css);
+@import url(../blocks/like/like.css);
+
+/* Секция Footer */
+
+@import url(../blocks/page/__footer/page__footer.css);
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);

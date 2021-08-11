@@ -1,0 +1,9 @@
+.page__footer {
+    margin: 67px 200px 0 200px;
+}
+
+@media screen and (min-width: 1281px) {
+    .page__footer {
+        margin: 67px auto 60px auto;
+    }
+}
