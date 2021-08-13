@@ -16,10 +16,12 @@
 @import url(../blocks/avatar/avatar.css);
 @import url(../blocks/profile-info/profile-info.css);
 @import url(../blocks/profile/__profile-info/profile__profile-info.css);
+@import url(../blocks/profile-info/__container/profile-info__container.css);
 @import url(../blocks/profile-info/__name/profile-info__name.css);
 @import url(../blocks/profile-info/__role/profile-info__role.css);
 @import url(../blocks/button-edit/button-edit.css);
 @import url(../blocks/button-add/button-add.css);
+@import url(../blocks/profile/__button-add/profile__button-add.css);
 
 /* Секция Element */
 

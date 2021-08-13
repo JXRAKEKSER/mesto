@@ -9,19 +9,21 @@
 </head>
 
 <body class="page">
+    <header class="header page__header">
+        <img class="header__logo" src="./source/images/svg-images/mesto_logo.svg" alt="Лого" />
+    </header>
     <main class="content">
-        <header class="header page__header">
-            <img class="header__logo" src="./source/images/svg-images/mesto_logo.svg" alt="Лого" />
-        </header>
         <section class="profile page__profile">
             <img class="avatar" src="./source/images/png-images/Jak-Iv-Kusto.png" alt="Аватар" />
             <div class="profile-info profile__profile-info">
-                <h2 class="profile-info__name">Жак-Ив Кусто</h2>
+                <div class="profile-info__container">
+                    <h2 class="profile-info__name">Жак-Ив Кусто</h2>
+                    <button class="button-edit"></button>
+                </div>
                 <p class="profile-info__role">Исследователь океана</p>
-                <button class="button-edit"></button>
             </div>
 
-            <button class="button-add"></button>
+            <button class="button-add profile__button-add"></button>
         </section>
         <section class="elements page__elements">
             <div class="element">

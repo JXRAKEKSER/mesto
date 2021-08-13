@@ -6,3 +6,34 @@
     row-gap: 20px;
     column-gap: 17px;
 }
+
+@media screen and (min-width: 320px) and (max-width: 500px) {
+    .elements {
+        width: calc(100% - 2*19px);
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(6, 1fr);
+        row-gap: 20px;
+        justify-items: center;
+    }
+}
+
+@media screen and (min-width: 500px) and (max-width: 670px) {
+    .elements {
+        width: calc(100% - 2*5px);
+        grid-template-columns: repeat(2, calc((100% - 10px)/2));
+        /*  grid-template-columns: repeat(2, 1fr); */
+        grid-template-rows: repeat(3, 1fr);
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+}
+
+@media screen and (min-width: 670px) and (max-width: 1025px) {
+    .elements {
+        width: calc(100% - 2*24px);
+        grid-template-columns: repeat(3, calc((100% - 2*10px)/3));
+        row-gap: 10px;
+        column-gap: 10px;
+        /* justify-items: center; */
+    }
+}

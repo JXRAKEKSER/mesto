@@ -29,3 +29,9 @@
         width: calc(100% - 2*125px);
     }
 }
+
+@media screen and (min-width: 1281px) {
+    .header {
+        width: 880px;
+    }
+}
