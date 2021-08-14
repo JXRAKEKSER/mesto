@@ -3,3 +3,8 @@
     height: 19px;
     cursor: pointer;
 }
+
+.like:hover {
+    opacity: 0.5;
+    transition: opacity 350ms ease;
+}
