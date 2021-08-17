@@ -9,6 +9,5 @@
 @media screen and (min-width: 500px) {
     .element {
         max-width: 100%;
-        object-fit: cover;
     }
 }

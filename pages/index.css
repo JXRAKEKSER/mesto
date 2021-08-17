@@ -13,15 +13,14 @@
 
 @import url(../blocks/page/__profile/page__profile.css);
 @import url(../blocks/profile/profile.css);
-@import url(../blocks/avatar/avatar.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
 @import url(../blocks/profile-info/profile-info.css);
 @import url(../blocks/profile/__profile-info/profile__profile-info.css);
 @import url(../blocks/profile-info/__container/profile-info__container.css);
 @import url(../blocks/profile-info/__name/profile-info__name.css);
 @import url(../blocks/profile-info/__role/profile-info__role.css);
-@import url(../blocks/button-edit/button-edit.css);
-@import url(../blocks/button-add/button-add.css);
-@import url(../blocks/profile/__button-add/profile__button-add.css);
+@import url(../blocks/profile-info/__button-edit/profile-info__button-edit.css);
+@import url(../blocks/profile-info/__button-add/profile-info__button-add.css);
 
 /* Секция Element */
 
@@ -31,8 +30,8 @@
 @import url(../blocks/element/__container/element__container.css);
 @import url(../blocks/element/__photo/element__photo.css);
 @import url(../blocks/element/__title/element__title.css);
-@import url(../blocks/like/like.css);
-@import url(../blocks/like/_active/like_active_true.css);
+@import url(../blocks/element/__like/element__like.css);
+@import url(../blocks/element/__like/_active/element__like_active.css);
 
 /* Секция Footer */
 
@@ -43,11 +42,11 @@
 /* Popup */
 
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__title/popup__title.css);
 @import url(../blocks/popup/__input/popup__input.css);
-@import url(../blocks/button-save/button-save.css);
 @import url(../blocks/popup/__button-save/popup__button-save.css);
-@import url(../blocks/button-save/_color/button-save_color_black.css);
-@import url(../blocks/popup/__close-icon/popup__close-icon.css);
-@import url(../blocks/popup/_opend/popup_opened.css);
+@import url(../blocks/popup/__button-save/_color/popup__button-save_color_black.css);
+@import url(../blocks/popup/__button-close/popup__button-close.css);
+@import url(../blocks/popup/_opened/popup_opened.css);

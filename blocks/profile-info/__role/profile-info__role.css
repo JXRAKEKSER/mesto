@@ -6,6 +6,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    max-width: 336px;
 }
 
 @media screen and (min-width: 320px) and (max-width: 623px) {
@@ -14,5 +15,12 @@
         line-height: 17px;
         text-align: center;
         margin: 14px 0 0 0;
+        max-width: 282px;
+    }
+}
+
+@media screen and (min-width: 623px) and (max-width: 1030px) {
+    .profile-info__role {
+        max-width: 240px;
     }
 }
