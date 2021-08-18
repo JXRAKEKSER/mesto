@@ -14,7 +14,7 @@
     </header>
     <main class="content">
         <section class="profile page__profile">
-            <img class="avatar" src="./source/images/png-images/Jak-Iv-Kusto.png" alt="Аватар" />
+            <img class="profile__avatar" src="./source/images/png-images/Jak-Iv-Kusto.png" alt="Аватар" />
             <div class="profile-info profile__profile-info">
                 <div class="profile-info__container">
                     <h1 class="profile-info__name">Жак-Ив Кусто</h1>
@@ -23,7 +23,7 @@
                 <p class="profile-info__role">Исследователь океана</p>
             </div>
 
-            <button class="profile-info__button-add" type="button"></button>
+            <button class="profile__button-add" type="button"></button>
         </section>
         <section class="elements page__elements">
             <article class="element">
@@ -79,11 +79,11 @@
             <button class="popup__button-close" type="button"></button>
             <form class="popup__form" name="formProfileInfo">
 
-                <h2 class="popup__title">Редактирование профиля</h2>
-                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required />
-                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required/>
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required name="fio" />
+                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required name="aboutYourself" />
                 <!-- <button class="button-save button-save_color_black popup__button-save" type="submit">Сохранить</button> -->
-                <input class="popup__button-save popup__button-save_color_black" type="submit" value="Сохранить" />
+                <input class="popup__button-save" type="submit" value="Сохранить" />
             </form>
         </div>
     </div>

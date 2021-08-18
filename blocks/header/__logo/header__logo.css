@@ -12,13 +12,7 @@
     }
 }
 
-@media screen and (min-width: 426px) and (max-width: 500px) {
-    .header__logo {
-        margin: 0 0 31px 27px;
-    }
-}
-
-@media screen and (min-width: 500px) and (max-width: 769px) {
+@media screen and (min-width: 426px) and (max-width: 769px) {
     .header__logo {
         margin: 0 0 31px 27px;
     }
