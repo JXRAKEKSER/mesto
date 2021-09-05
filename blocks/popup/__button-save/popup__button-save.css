@@ -21,7 +21,8 @@
     .popup__button-save {
         font-size: 14px;
         line-height: 17px;
-        width: calc(100% - 2* 22px);
-        margin: 45px 22px 25px 22px;
+        width: calc(100% - 2*22px);
+        margin: 36px 22px 25px 22px;
+        padding: 14px 0 14px 0;
     }
 }
