@@ -33,19 +33,19 @@
     <footer class="footer page__footer">
         <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
     </footer>
-    <div class="popup" id="editProfile">
+    <div class="popup popup_type_profile">
         <div class="popup__container">
             <button class="popup__button-close" type="button"></button>
             <form class="popup__form" name="formProfileInfo">
 
                 <h2 class="popup__title">Редактировать профиль</h2>
-                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required name="fio" /> 
-                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required name="aboutYourself" /> 
+                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required name="fio" />
+                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required name="aboutYourself" />
                 <input class="popup__button-save" type="submit" value="Сохранить" />
-            </form>
+             </form>
         </div>
     </div>
-    <div class="popup" id="addMesto">
+    <div class="popup popup_type_card-add">
         <div class="popup__container">
             <button class="popup__button-close" type="button"></button>
             <form class="popup__form" name="formAddMesto">
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="popup popup_opacity" id="photoMesto">
+    <div class="popup popup_opacity popup_type_picture">
         <div class="popup__container-photo">
             <button class="popup__button-close" type="button"></button>
             <img class="popup__photo" src="#" alt="#" />
@@ -76,6 +76,7 @@
             </div>
         </article>
     </template>
+
     <script src="./scripts/script.js"></script>
 </body>
 

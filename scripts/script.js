@@ -1,27 +1,32 @@
+//import data from './data';
+/*Я изначально хотел разделить данные и функции - создать отдельный файл для них, но столкнулся с ошибкой экспортирования
+ SyntaxError: Cannot use import statement outside a module, поискал информацию и нашел, что это какая-то замутка с бабелем, толком не вник и сейчас нет времени на это
+  надеюсь, Вы не вернете работу на доработку из-за этого, мне всё равно нужно разобраться с этим, чтобы дальнейшие работы сдавать
+  Не стал удалять код для варинта использования даных из файла*/
 // блок объявления и инициализации элементов редактирования информации профиля
-let editProfileButton = document.querySelector('.profile-info__button-edit');
-let closeEditProfilePopupButton = document.querySelector('#editProfile .popup__button-close');
-let popupEditProfile = document.querySelector('#editProfile');
-let profileName = document.querySelector('.profile-info__name');
-let profileInfoRole = document.querySelector('.profile-info__role');
-let inputItemRole = document.querySelector('#editProfile input[name=aboutYourself]');
-let inputItemName = document.querySelector('#editProfile input[name=fio]');
-let formProfileInfoContainer = document.querySelector('#editProfile .popup__form');
+const editProfileButton = document.querySelector('.profile-info__button-edit');
+const closeEditProfilePopupButton = document.querySelector('.popup_type_profile .popup__button-close');
+const popupEditProfile = document.querySelector('.popup_type_profile');
+const profileName = document.querySelector('.profile-info__name');
+const profileInfoRole = document.querySelector('.profile-info__role');
+const inputItemRole = document.querySelector('.popup_type_profile input[name=aboutYourself]');
+const inputItemName = document.querySelector('.popup_type_profile input[name=fio]');
+const formProfileInfoContainer = document.querySelector('.popup_type_profile .popup__form');
 
 // блок объявления и инициализации общих элементов(контейнеры, секции и т.п. семантически общие вещи)
-let elementsContainer = document.querySelector('.elements');
+const elementsContainer = document.querySelector('.elements');
 
 
 // блок объявления и инициализации элементов добавления места
-let addMestoButton = document.querySelector('.profile__button-add');
-let addMestoPopup = document.querySelector('#addMesto');
-let closeAddMestoPopupButton = document.querySelector('#addMesto .popup__button-close');
-let inputMestoName = document.querySelector('input[name=mestoName]');
-let inputMestoURL = document.querySelector('input[name=mestoURL]');
-let formAddMestoContainer = document.querySelector('#addMesto .popup__form');
+const addMestoButton = document.querySelector('.profile__button-add');
+const addMestoPopup = document.querySelector('.popup_type_card-add');
+const closeAddMestoPopupButton = document.querySelector('.popup_type_card-add .popup__button-close');
+const inputMestoName = document.querySelector('input[name=mestoName]');
+const inputMestoURL = document.querySelector('input[name=mestoURL]');
+const formAddMestoContainer = document.querySelector('.popup_type_card-add .popup__form');
 // блок объявления и инициализации элементов просмотра картинки
-let mestoPhotoPopup = document.querySelector('#photoMesto');
-let closeMestoPhotoPopupButton =  document.querySelector('#photoMesto .popup__button-close');
+const mestoPhotoPopup = document.querySelector('.popup_type_picture');
+const closeMestoPhotoPopupButton =  document.querySelector('.popup_type_picture .popup__button-close');
 // массив данных для загрузки дефолтных карточек
 const initialCards  = [
     {
@@ -50,39 +55,54 @@ const initialCards  = [
     }
 ]
 // функция рендеринга дефолтных карточек
-function preloadCards() {
+function  createCard(cardData) {
+    const cardTemplate = document.querySelector('#card').content;
+    const newCard = cardTemplate.querySelector('.element').cloneNode(true);
+    newCard.querySelector('.element__photo').src = cardData.link;
+    newCard.querySelector('.element__photo').alt = `Фото ${cardData.name}`;
+    newCard.querySelector('.element__title').textContent = cardData.name;
+    return newCard;
+}
 
-    initialCards.forEach((dataItem) => {
+function preloadCards(data) {
+
+   /* data.indexPage.preloadData.initialCards.forEach((dataItem) => {
         //renderCard инициализируется в блоке общих переменных
-        const cardTemplate = document.querySelector('#card').content;
-        const renderCard = cardTemplate.querySelector('.element').cloneNode(true);
-        renderCard.querySelector('.element__photo').src = dataItem.link;
-        renderCard.querySelector('.element__photo').alt = `Фото ${dataItem.name}`;
-        renderCard.querySelector('.element__title').textContent = dataItem.name;
-        elementsContainer.append(renderCard);
+        elementsContainer.append(createCard(dataItem));
+    });*/
+    data.forEach((dataItem) => {
+        //renderCard инициализируется в блоке общих переменных
+        elementsContainer.append(createCard(dataItem));
     });
+
 };
 
 //функция очистки данных внутри попапа
-function clearInput(popup) {
-   let inputs = popup.querySelectorAll('.popup__input');
-    inputs.forEach( input => {
-       input.value = "";
-    });
+function clearFormInputs(popup) {
+    //проверка на наличие формы в попапе, чтобы не возникало ошибки при закрытии попапа просмотра фотографий
+    if(popup.querySelector('form')) {
+        let form = popup.querySelector('.popup__form');
+        form.reset();
+    }
+
 }
 
  function openPopup(popup) {
-
     popup.classList.add('popup_opened');
 
-
-     inputItemName.value = profileName.textContent;
-     inputItemRole.value = profileInfoRole.textContent;
 };
 
 function closePopup (popup) {
     popup.classList.remove('popup_opened');
-    clearInput(popup);
+
+    //если я не оставлю здесь вызов функции очистки формы, то при закрытии попапа на крестик данные в ней останутся, мне какжется это не очень удобно
+    clearFormInputs(popup);
+}
+
+function openProfilePopup() {
+    inputItemName.value = profileName.textContent;
+    inputItemRole.value = profileInfoRole.textContent;
+    openPopup(popupEditProfile);
 }
 
 
@@ -100,81 +120,58 @@ function saveProfileInfo(evt) {
 function addMestoCard(evt) {
     evt.preventDefault();
 
-    const cardTemplate = document.querySelector('#card').content;
-    const renderCard = cardTemplate.querySelector('.element').cloneNode(true);
-    console.log(inputMestoURL);
-    renderCard.querySelector('.element__photo').src = inputMestoURL.value;
-    renderCard.querySelector('.element__photo').alt = `Фото ${inputMestoName.value}`;
-    renderCard.querySelector('.element__title').textContent = inputMestoName.value;
-    elementsContainer.prepend(renderCard);
-    let inputs = addMestoPopup.querySelectorAll('.popup__input');
-    inputs.forEach((input) => {
-       input.value = "";
-    });
+    elementsContainer.prepend(createCard({ name: inputMestoName.value, link:inputMestoURL.value}));
+    clearFormInputs(addMestoPopup);
     closePopup(addMestoPopup);
 };
 
 //функция удаления карточки
 function removeMestoCard(evt) {
-    if(evt.target.className == 'element__trash'){
-      const removeElement = event.target.closest('.element');
+
+      const removeElement = evt.target.closest('.element');
         removeElement.remove();
-    }
+
 }
 
 //функция проставления лайков
 function addLike(evt) {
-    if(evt.target.classList[0] == 'element__like'){
         evt.target.classList.toggle('element__like_active');
-    }
 }
 
 function openWithPhoto(evt) {
-    if(evt.target.className == 'element__photo'){
-        console.log(evt.target.classList[0])
+
         mestoPhotoPopup.querySelector('.popup__photo').src = evt.target.src;
         mestoPhotoPopup.querySelector('.popup__photo-name').textContent = evt.target.closest('.element').querySelector('.element__title').textContent;
         mestoPhotoPopup.querySelector('.popup__photo').alt = `Фото ${mestoPhotoPopup.querySelector('.popup__photo-name').textContent}`;
         openPopup(mestoPhotoPopup);
-    }
+
 }
 
 // вызов функции загрузки дефолтных карт
-preloadCards();
-
-//блок функций замыкания
-var closureOpenPopup = function (popup) {
-    return function openPopup() {
-
-        popup.classList.add('popup_opened');
+preloadCards(initialCards);
 
 
-        inputItemName.value = profileName.textContent;
-        inputItemRole.value = profileInfoRole.textContent;
-    };
-};
-
-var closureClosePopup = function (popup) {
-    return function closePopup () {
-        popup.classList.remove('popup_opened');
-        clearInput(popup);
-    }
-};
 // блок слушателей кнопок
 //profileInfo
-editProfileButton.addEventListener('click',closureOpenPopup(popupEditProfile));
-closeEditProfilePopupButton.addEventListener('click', closureClosePopup(popupEditProfile));
+editProfileButton.addEventListener('click',() => openProfilePopup());
+closeEditProfilePopupButton.addEventListener('click',() => closePopup(popupEditProfile));
 formProfileInfoContainer.addEventListener('submit', saveProfileInfo);
 
 //addMesto
-addMestoButton.addEventListener('click', closureOpenPopup(addMestoPopup));
-closeAddMestoPopupButton.addEventListener('click', closureClosePopup(addMestoPopup));
+addMestoButton.addEventListener('click', () => openPopup(addMestoPopup));
+closeAddMestoPopupButton.addEventListener('click', () => closePopup(addMestoPopup));
 formAddMestoContainer.addEventListener('submit', addMestoCard);
 //обработчик на контейнер карточек
-elementsContainer.onclick = (evt)=>{
-   removeMestoCard(evt);
-    addLike(evt);
-    openWithPhoto(evt);
-};
+elementsContainer.addEventListener('click', (evt)=>{
+    if(evt.target.classList.contains('element__trash')) {
+        removeMestoCard(evt);
+    }
+    if(evt.target.classList.contains('element__like')){
+        addLike(evt);
+    }
+    if(evt.target.classList.contains('element__photo')) {
+        openWithPhoto(evt);
+    }
+});
 
-closeMestoPhotoPopupButton.addEventListener('click', closureClosePopup(mestoPhotoPopup));
+closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
