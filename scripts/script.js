@@ -103,7 +103,9 @@ function closePopup (popup) {
 function openProfilePopup() {
     inputItemName.value = profileName.textContent;
     inputItemRole.value = profileInfoRole.textContent;
+   
     openPopup(popupEditProfile);
+
 }
 
 
@@ -236,7 +238,11 @@ function setInputListeners(form) {
        input.addEventListener('input', (evt) => {
            changeValidateState(form, input);
            toogleSubmitButton(inputsList, submitButton);
-       }); 
+       });
+        input.addEventListener('change', (evt) =>{
+            changeValidateState(form, input);
+            toogleSubmitButton(inputsList, submitButton);
+        });
     });
 }
 
