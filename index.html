@@ -36,11 +36,15 @@
     <div class="popup popup_type_profile">
         <div class="popup__container">
             <button class="popup__button-close" type="button"></button>
-            <form class="popup__form" name="formProfileInfo">
+            <form class="popup__form" name="formProfileInfo" novalidate>
 
                 <h2 class="popup__title">Редактировать профиль</h2>
-                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required name="fio" />
-                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required name="aboutYourself" />
+                <input class="popup__input" value="Жак-Ив Кусто" placeholder="Имя" required name="fio" id="profile-name"
+                maxlength="40" minlength="2"/>
+                <span class="popup__input-error-info profile-name-error"></span>
+                <input class="popup__input" value="Исследователь океана" placeholder="О себе" required name="aboutYourself"
+                       id="profile-about" maxlength="200" minlength="2"/>
+                <span class="popup__input-error-info profile-about-error"></span>
                 <input class="popup__button-save" type="submit" value="Сохранить" />
              </form>
         </div>
@@ -48,11 +52,13 @@
     <div class="popup popup_type_card-add">
         <div class="popup__container">
             <button class="popup__button-close" type="button"></button>
-            <form class="popup__form" name="formAddMesto">
+            <form class="popup__form" name="formAddMesto" novalidate>
 
                 <h2 class="popup__title">Новое место</h2>
-                <input class="popup__input" value="" placeholder="Название" required name="mestoName" />
-                <input class="popup__input" value="" placeholder="Ссылка на картинку" required name="mestoURL" />
+                <input class="popup__input" value="" placeholder="Название" required name="mestoName" id="mesto-name"/>
+                <span class="popup__input-error-info mesto-name-error"></span>
+                <input class="popup__input" value="" placeholder="Ссылка на картинку" required name="mestoURL"  id="mesto-url" type="url"/>
+                <span class="popup__input-error-info mesto-url-error"></span>
                 <input class="popup__button-save" type="submit" value="Создать" />
             </form>
         </div>

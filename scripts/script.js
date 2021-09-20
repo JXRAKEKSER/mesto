@@ -3,6 +3,7 @@
  SyntaxError: Cannot use import statement outside a module, поискал информацию и нашел, что это какая-то замутка с бабелем, толком не вник и сейчас нет времени на это
   надеюсь, Вы не вернете работу на доработку из-за этого, мне всё равно нужно разобраться с этим, чтобы дальнейшие работы сдавать
   Не стал удалять код для варинта использования даных из файла*/
+
 // блок объявления и инициализации элементов редактирования информации профиля
 const editProfileButton = document.querySelector('.profile-info__button-edit');
 const closeEditProfilePopupButton = document.querySelector('.popup_type_profile .popup__button-close');
@@ -174,4 +175,78 @@ elementsContainer.addEventListener('click', (evt)=>{
     }
 });
 
+document.querySelector('.page').addEventListener('click', (evt) => {
+   if(evt.target.classList.contains('popup')){
+       closePopup(evt.target);
+   }
+});
+
+document.querySelector('.page').addEventListener('keydown', (evt) => {
+    
+    if(evt.key === "Escape"){
+        closePopup(document.querySelector('.popup_opened'));
+    }
+});
+
 closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
+function isValid(input) {
+    return input.validity.valid;
+}
+
+function hasValidationFail(inputsList) {
+    return inputsList.some(input => {
+       return !input.validity.valid;
+    });
+}
+
+function toogleSubmitButton(inputsList, button) {
+    if(hasValidationFail(inputsList)){
+        button.classList.add('popup__button-save_inactive');
+        button.disabled = true;
+    }else{
+        button.classList.remove('popup__button-save_inactive');
+        button.disabled = false;
+    }
+}
+
+function showErrorMsg(form, input, errorstrMsg) {
+    const errorSpan = form.querySelector(`.${input.id}-error`);
+    input.classList.add('popup__input_type_error');
+    errorSpan.textContent = errorstrMsg;
+}
+
+function hideErrorMsg(form, input) {
+    input.classList.remove('popup__input_type_error');
+    form.querySelector(`.${input.id}-error`).textContent = '';
+}
+
+function changeValidateState(form, input){
+    if(!isValid(input)) {
+        showErrorMsg(form, input, input.validationMessage);
+    }else{
+        hideErrorMsg(form, input);
+    }
+}
+
+function setInputListeners(form) {
+    const inputsList = Array.from(form.querySelectorAll('.popup__input'));
+    const submitButton = form.querySelector('.popup__button-save');
+    toogleSubmitButton(inputsList, submitButton);
+    inputsList.forEach(input =>{
+       input.addEventListener('input', (evt) => {
+           changeValidateState(form, input);
+           toogleSubmitButton(inputsList, submitButton);
+       }); 
+    });
+}
+
+function setFormListener() {
+    Array.from(document.forms).forEach(form =>{
+       form.addEventListener('submit', (evt)=>{
+           evt.preventDefault();
+       });
+        setInputListeners(form);
+    });
+}
+
+setFormListener();

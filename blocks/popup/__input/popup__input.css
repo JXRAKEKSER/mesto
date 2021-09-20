@@ -10,7 +10,7 @@
     
 }
 
-.popup__input:nth-child(3) {
+.popup__input:nth-child(4) {
     margin: 30px 36px 0 36px;
 }
 
@@ -18,7 +18,7 @@
     .popup__input {
         margin: 75px 22px 0 22px;
     }
-    .popup__input:nth-child(3) {
+    .popup__input:nth-child(4) {
         margin: 30px 22px 0 22px;
     }
 }
