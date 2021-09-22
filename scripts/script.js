@@ -74,15 +74,16 @@ function preloadCards(data) {
     data.forEach((dataItem) => {
         //renderCard инициализируется в блоке общих переменных
         elementsContainer.append(createCard(dataItem));
+        setCardEventListenets(elementsContainer.lastElementChild);
     });
 
-};
+}
 
 //функция очистки данных внутри попапа
 function clearFormInputs(popup) {
     //проверка на наличие формы в попапе, чтобы не возникало ошибки при закрытии попапа просмотра фотографий
     if(popup.querySelector('form')) {
-        let form = popup.querySelector('.popup__form');
+        const form = popup.querySelector('.popup__form');
         form.reset();
     }
 
@@ -90,13 +91,15 @@ function clearFormInputs(popup) {
 
  function openPopup(popup) {
     popup.classList.add('popup_opened');
+    document.querySelector('.page').addEventListener('keydown', closePopupByKeyboard);
 
 };
 
 function closePopup (popup) {
     popup.classList.remove('popup_opened');
-
-    //если я не оставлю здесь вызов функции очистки формы, то при закрытии попапа на крестик данные в ней останутся, мне какжется это не очень удобно
+    document.querySelector('.page').removeEventListener('keydown', closePopupByKeyboard);
+    // внутри функции чистки попапа проверяется имеет ли попап форму и только в этом случае очищает её,
+    // или это чисто концептуальный вопрос в том, чтобы вызывать очистку только на попапах с формой?
     clearFormInputs(popup);
 }
 
@@ -118,35 +121,57 @@ function saveProfileInfo(evt) {
 
 }
 
+function setCardEventListenets(card) {
+    const likeBtn = card.querySelector('.element__like');
+    likeBtn.addEventListener('click', addLike);
+    const removeBtn = card.querySelector('.element__trash');
+    removeBtn.addEventListener('click', removeMestoCard);
+    const photoOpener = card.querySelector('.element__photo');
+    photoOpener.addEventListener('click', openWithPhoto);
+}
+
 
 // функция добавления карточки
+
 function addMestoCard(evt) {
     evt.preventDefault();
 
     elementsContainer.prepend(createCard({ name: inputMestoName.value, link:inputMestoURL.value}));
+    setCardEventListenets(elementsContainer.firstElementChild);
     clearFormInputs(addMestoPopup);
+    const inputsList = Array.from(evt.target.closest('.popup__form').querySelectorAll('.popup__input'));
+    toogleSubmitButton(inputsList, evt.target.closest('.popup__form').querySelector('.popup__button-save'), 'popup__button-save_inactive');
     closePopup(addMestoPopup);
 };
 
 //функция удаления карточки
 function removeMestoCard(evt) {
+    if(evt.target.classList.contains('element__trash')) {
+        const removeElement = evt.target.closest('.element');
+        removeElement.querySelector('.element__like').removeEventListener('click', addLike);
+        removeElement.querySelector('.element__trash').removeEventListener('click', removeMestoCard);
+        removeElement.querySelector('.element__photo').removeEventListener('click', openWithPhoto);
 
-      const removeElement = evt.target.closest('.element');
         removeElement.remove();
+    }
 
 }
 
 //функция проставления лайков
 function addLike(evt) {
+    if(evt.target.classList.contains('element__like')){
         evt.target.classList.toggle('element__like_active');
+    }
 }
 
 function openWithPhoto(evt) {
+        if(evt.target.classList.contains('element__photo')){
+            mestoPhotoPopup.querySelector('.popup__photo').src = evt.target.src;
+            mestoPhotoPopup.querySelector('.popup__photo-name').textContent = evt.target.closest('.element').querySelector('.element__title').textContent;
+            mestoPhotoPopup.querySelector('.popup__photo').alt = `Фото ${mestoPhotoPopup.querySelector('.popup__photo-name').textContent}`;
+            openPopup(mestoPhotoPopup);
+        }
 
-        mestoPhotoPopup.querySelector('.popup__photo').src = evt.target.src;
-        mestoPhotoPopup.querySelector('.popup__photo-name').textContent = evt.target.closest('.element').querySelector('.element__title').textContent;
-        mestoPhotoPopup.querySelector('.popup__photo').alt = `Фото ${mestoPhotoPopup.querySelector('.popup__photo-name').textContent}`;
-        openPopup(mestoPhotoPopup);
 
 }
 
@@ -165,7 +190,7 @@ addMestoButton.addEventListener('click', () => openPopup(addMestoPopup));
 closeAddMestoPopupButton.addEventListener('click', () => closePopup(addMestoPopup));
 formAddMestoContainer.addEventListener('submit', addMestoCard);
 //обработчик на контейнер карточек
-elementsContainer.addEventListener('click', (evt)=>{
+/*elementsContainer.addEventListener('click', (evt)=>{
     if(evt.target.classList.contains('element__trash')) {
         removeMestoCard(evt);
     }
@@ -175,7 +200,7 @@ elementsContainer.addEventListener('click', (evt)=>{
     if(evt.target.classList.contains('element__photo')) {
         openWithPhoto(evt);
     }
-});
+});*/
 
 document.querySelector('.page').addEventListener('click', (evt) => {
    if(evt.target.classList.contains('popup')){
@@ -183,12 +208,14 @@ document.querySelector('.page').addEventListener('click', (evt) => {
    }
 });
 
-document.querySelector('.page').addEventListener('keydown', (evt) => {
-    
+function closePopupByKeyboard(evt){
     if(evt.key === "Escape"){
         closePopup(document.querySelector('.popup_opened'));
     }
-});
+
+}
+
+
 
 closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
 function isValid(input) {
@@ -201,58 +228,66 @@ function hasValidationFail(inputsList) {
     });
 }
 
-function toogleSubmitButton(inputsList, button) {
+function toogleSubmitButton(inputsList, button, inactiveButtonClass) {
     if(hasValidationFail(inputsList)){
-        button.classList.add('popup__button-save_inactive');
+        button.classList.add(inactiveButtonClass);
         button.disabled = true;
     }else{
-        button.classList.remove('popup__button-save_inactive');
+        button.classList.remove(inactiveButtonClass);
         button.disabled = false;
     }
 }
 
-function showErrorMsg(form, input, errorstrMsg) {
+function showErrorMsg(form, input, errorstrMsg, inputErrorClass) {
     const errorSpan = form.querySelector(`.${input.id}-error`);
-    input.classList.add('popup__input_type_error');
+    input.classList.add(inputErrorClass);
     errorSpan.textContent = errorstrMsg;
 }
 
-function hideErrorMsg(form, input) {
-    input.classList.remove('popup__input_type_error');
+function hideErrorMsg(form, input, inputErrorClass) {
+    input.classList.remove(inputErrorClass);
     form.querySelector(`.${input.id}-error`).textContent = '';
 }
 
-function changeValidateState(form, input){
+function changeValidateState(form, input, inputErrorClass){
     if(!isValid(input)) {
-        showErrorMsg(form, input, input.validationMessage);
+        showErrorMsg(form, input, input.validationMessage, inputErrorClass);
     }else{
-        hideErrorMsg(form, input);
+        hideErrorMsg(form, input, inputErrorClass);
     }
 }
 
-function setInputListeners(form) {
-    const inputsList = Array.from(form.querySelectorAll('.popup__input'));
-    const submitButton = form.querySelector('.popup__button-save');
-    toogleSubmitButton(inputsList, submitButton);
+function setInputListeners(form, validSelectors) {
+    const inputsList = Array.from(form.querySelectorAll(`.${validSelectors.inputSelector}`));
+    const submitButton = form.querySelector(`.${validSelectors.submitButtonSelector}`);
+    toogleSubmitButton(inputsList, submitButton, validSelectors.inactiveButtonClass);
     inputsList.forEach(input =>{
        input.addEventListener('input', (evt) => {
-           changeValidateState(form, input);
-           toogleSubmitButton(inputsList, submitButton);
+           changeValidateState(form, input, validSelectors.inputErrorClass);
+           toogleSubmitButton(inputsList, submitButton, validSelectors.inactiveButtonClass);
        });
         input.addEventListener('change', (evt) =>{
-            changeValidateState(form, input);
-            toogleSubmitButton(inputsList, submitButton);
+            changeValidateState(form, input, validSelectors.inputErrorClass);
+            toogleSubmitButton(inputsList, submitButton, validSelectors.inactiveButtonClass);
         });
     });
 }
 
-function setFormListener() {
+function enableValidation(validSelectors) {
     Array.from(document.forms).forEach(form =>{
        form.addEventListener('submit', (evt)=>{
            evt.preventDefault();
        });
-        setInputListeners(form);
+        setInputListeners(form, validSelectors);
     });
 }
+// вызовы функций
 
-setFormListener();
+enableValidation({
+    formSelector: 'popup__form',
+    inputSelector: 'popup__input',
+    submitButtonSelector: 'popup__button-save',
+    inactiveButtonClass: 'popup__button-save_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error-info'
+});
