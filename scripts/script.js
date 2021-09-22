@@ -68,10 +68,7 @@ function  createCard(cardData) {
 
 function preloadCards(data) {
 
-   /* data.indexPage.preloadData.initialCards.forEach((dataItem) => {
-        //renderCard инициализируется в блоке общих переменных
-        elementsContainer.append(createCard(dataItem));
-    });*/
+
     data.forEach((dataItem) => {
         //renderCard инициализируется в блоке общих переменных
         elementsContainer.append(createCard(dataItem));
@@ -141,7 +138,7 @@ function addMestoCard(evt) {
     evt.preventDefault();
 
     elementsContainer.prepend(createCard({ name: inputMestoName.value, link:inputMestoURL.value}));
-   
+
     clearFormInputs(addMestoPopup);
     const inputsList = Array.from(evt.target.closest('.popup__form').querySelectorAll('.popup__input'));
     toogleSubmitButton(inputsList, evt.target.closest('.popup__form').querySelector('.popup__button-save'), 'popup__button-save_inactive');
@@ -193,18 +190,8 @@ formProfileInfoContainer.addEventListener('submit', saveProfileInfo);
 addMestoButton.addEventListener('click', () => openPopup(addMestoPopup));
 closeAddMestoPopupButton.addEventListener('click', () => closePopup(addMestoPopup));
 formAddMestoContainer.addEventListener('submit', addMestoCard);
-//обработчик на контейнер карточек
-/*elementsContainer.addEventListener('click', (evt)=>{
-    if(evt.target.classList.contains('element__trash')) {
-        removeMestoCard(evt);
-    }
-    if(evt.target.classList.contains('element__like')){
-        addLike(evt);
-    }
-    if(evt.target.classList.contains('element__photo')) {
-        openWithPhoto(evt);
-    }
-});*/
+
+
 
 document.querySelector('.page').addEventListener('click', (evt) => {
    if(evt.target.classList.contains('popup')){
