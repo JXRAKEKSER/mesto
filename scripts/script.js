@@ -62,6 +62,7 @@ function  createCard(cardData) {
     newCard.querySelector('.element__photo').src = cardData.link;
     newCard.querySelector('.element__photo').alt = `Фото ${cardData.name}`;
     newCard.querySelector('.element__title').textContent = cardData.name;
+    setCardEventListenets(newCard);
     return newCard;
 }
 
@@ -74,7 +75,7 @@ function preloadCards(data) {
     data.forEach((dataItem) => {
         //renderCard инициализируется в блоке общих переменных
         elementsContainer.append(createCard(dataItem));
-        setCardEventListenets(elementsContainer.lastElementChild);
+
     });
 
 }
@@ -140,7 +141,7 @@ function addMestoCard(evt) {
     evt.preventDefault();
 
     elementsContainer.prepend(createCard({ name: inputMestoName.value, link:inputMestoURL.value}));
-    setCardEventListenets(elementsContainer.firstElementChild);
+   
     clearFormInputs(addMestoPopup);
     const inputsList = Array.from(evt.target.closest('.popup__form').querySelectorAll('.popup__input'));
     toogleSubmitButton(inputsList, evt.target.closest('.popup__form').querySelector('.popup__button-save'), 'popup__button-save_inactive');
