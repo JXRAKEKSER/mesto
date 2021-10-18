@@ -1,4 +1,5 @@
 import  Card  from "./Card.js";
+import FormValidator from "./FormValidator.js";
 // блок объявления и инициализации элементов редактирования информации профиля
 const editProfileButton = document.querySelector('.profile-info__button-edit');
 const closeEditProfilePopupButton = document.querySelector('.popup_type_profile .popup__button-close');
@@ -11,7 +12,7 @@ const formProfileInfoContainer = document.querySelector('.popup_type_profile .po
 
 // блок объявления и инициализации общих элементов(контейнеры, секции и т.п. семантически общие вещи)
 const elementsContainer = document.querySelector('.elements');
-
+const formValidationObjList = [];
 
 // блок объявления и инициализации элементов добавления места
 const addMestoButton = document.querySelector('.profile__button-add');
@@ -58,8 +59,8 @@ function preloadCards(data) {
 
     data.forEach((dataItem) => {
         //renderCard инициализируется в блоке общих переменных
-       const card = new Card(dataItem, '#card');
-       elementsContainer.append(card.createCard());
+        const card = new Card(dataItem, '#card');
+        elementsContainer.append(card.createCard());
 
     });
 
@@ -75,7 +76,7 @@ function clearFormInputs(popup) {
 
 }
 
- function openPopup(popup) {
+function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.querySelector('.page').addEventListener('keydown', closePopupByKeyboard);
 
@@ -88,14 +89,17 @@ function closePopup (popup) {
 
     // внутри функции чистки попапа проверяется имеет ли попап форму и только в этом случае очищает её,
     // или это чисто концептуальный вопрос в том, чтобы вызывать очистку только на попапах с формой?
+
     clearFormInputs(popup);
-    toogleSubmitButton(inputsList, popup.querySelector('.popup__button-save'), 'popup__button-save_inactive');
+    removeValidation();
+    addValidation();
+
 }
 
 function openProfilePopup() {
     inputItemName.value = profileName.textContent;
     inputItemRole.value = profileInfoRole.textContent;
-   
+
     openPopup(popupEditProfile);
 
 }
@@ -110,26 +114,17 @@ function saveProfileInfo(evt) {
 
 }
 
-/*function setCardEventListenets(card) {
-    const likeBtn = card.querySelector('.element__like');
-    likeBtn.addEventListener('click', addLike);
-    const removeBtn = card.querySelector('.element__trash');
-    removeBtn.addEventListener('click', removeMestoCard);
-    const photoOpener = card.querySelector('.element__photo');
-    photoOpener.addEventListener('click', openWithPhoto);
-}*/
+
 
 
 // функция добавления карточки
 
 function addMestoCard(evt) {
     evt.preventDefault();
-
-    elementsContainer.prepend(createCard({ name: inputMestoName.value, link:inputMestoURL.value}));
+    const card = new Card({ name: inputMestoName.value, link:inputMestoURL.value}, '#card')
+    elementsContainer.prepend(card.createCard());
 
     clearFormInputs(addMestoPopup);
-    const inputsList = Array.from(evt.target.closest('.popup__form').querySelectorAll('.popup__input'));
-    toogleSubmitButton(inputsList, evt.target.closest('.popup__form').querySelector('.popup__button-save'), 'popup__button-save_inactive');
     closePopup(addMestoPopup);
 };
 
@@ -146,23 +141,8 @@ function removeMestoCard(evt) {
 
 }
 
-//функция проставления лайков
-/*function addLike(evt) {
-    if(evt.target.classList.contains('element__like')){
-        evt.target.classList.toggle('element__like_active');
-    }
-}*/
-
-/*function openWithPhoto(evt) {
-        if(evt.target.classList.contains('element__photo')){
-            mestoPhotoPopup.querySelector('.popup__photo').src = evt.target.src;
-            mestoPhotoPopup.querySelector('.popup__photo-name').textContent = evt.target.closest('.element').querySelector('.element__title').textContent;
-            mestoPhotoPopup.querySelector('.popup__photo').alt = `Фото ${mestoPhotoPopup.querySelector('.popup__photo-name').textContent}`;
-            openPopup(mestoPhotoPopup);
-        }
 
 
-}*/
 
 // вызов функции загрузки дефолтных карт
 preloadCards(initialCards);
@@ -182,9 +162,9 @@ formAddMestoContainer.addEventListener('submit', addMestoCard);
 
 
 document.querySelector('.page').addEventListener('click', (evt) => {
-   if(evt.target.classList.contains('popup')){
-       closePopup(evt.target);
-   }
+    if(evt.target.classList.contains('popup')){
+        closePopup(evt.target);
+    }
 });
 
 function closePopupByKeyboard(evt){
@@ -197,3 +177,31 @@ function closePopupByKeyboard(evt){
 
 
 closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
+
+function addValidation(){
+    Array.from(document.forms).forEach( form => {
+
+        form.addEventListener('submit', (evt) =>{
+            evt.preventDefault();
+        });
+        const formValidator = new FormValidator({
+            inputSelector: 'popup__input',
+            submitButtonSelector: 'popup__button-save',
+            inactiveButtonClass: 'popup__button-save_inactive',
+            inputErrorClass: 'popup__input_type_error',
+            errorClass: 'popup__input-error-info'
+        }, form);
+
+        formValidator.enableValidation();
+        formValidationObjList.push(formValidator);
+    });
+}
+
+function removeValidation(){
+    formValidationObjList.forEach( formValidator => {
+        formValidator.disableValidation();
+    });
+}
+
+addValidation();
+
