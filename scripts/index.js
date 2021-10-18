@@ -85,13 +85,13 @@ function openPopup(popup) {
 function closePopup (popup) {
     popup.classList.remove('popup_opened');
     document.querySelector('.page').removeEventListener('keydown', closePopupByKeyboard);
-    const inputsList = Array.from(popup.querySelectorAll('.popup__input'));
 
-    // внутри функции чистки попапа проверяется имеет ли попап форму и только в этом случае очищает её,
-    // или это чисто концептуальный вопрос в том, чтобы вызывать очистку только на попапах с формой?
 
+    // внутри функции чистки попапа проверяется имеет ли попап форму и только в этом случае очищает её
     clearFormInputs(popup);
-    removeValidation();
+
+    removeValidation(); // удаляет слушателей для всех объектов формы, у меня не получилось достаточно просто решить вопрос
+    // с состоянием кнопки при закрытии попапа, т.к. код, управляющий её состоянием отрабатывал раньше, чем поля ввода очищались
     addValidation();
 
 }
@@ -104,7 +104,6 @@ function openProfilePopup() {
 
 }
 
-
 function saveProfileInfo(evt) {
     evt.preventDefault();
 
@@ -114,11 +113,7 @@ function saveProfileInfo(evt) {
 
 }
 
-
-
-
 // функция добавления карточки
-
 function addMestoCard(evt) {
     evt.preventDefault();
     const card = new Card({ name: inputMestoName.value, link:inputMestoURL.value}, '#card')
@@ -128,25 +123,12 @@ function addMestoCard(evt) {
     closePopup(addMestoPopup);
 };
 
-//функция удаления карточки
-function removeMestoCard(evt) {
-    if(evt.target.classList.contains('element__trash')) {
-        const removeElement = evt.target.closest('.element');
-        removeElement.querySelector('.element__like').removeEventListener('click', addLike);
-        removeElement.querySelector('.element__trash').removeEventListener('click', removeMestoCard);
-        removeElement.querySelector('.element__photo').removeEventListener('click', openWithPhoto);
-
-        removeElement.remove();
+function closePopupByKeyboard(evt){
+    if(evt.key === "Escape"){
+        closePopup(document.querySelector('.popup_opened'));
     }
 
 }
-
-
-
-
-// вызов функции загрузки дефолтных карт
-preloadCards(initialCards);
-
 
 // блок слушателей кнопок
 //profileInfo
@@ -159,25 +141,14 @@ addMestoButton.addEventListener('click', () => openPopup(addMestoPopup));
 closeAddMestoPopupButton.addEventListener('click', () => closePopup(addMestoPopup));
 formAddMestoContainer.addEventListener('submit', addMestoCard);
 
-
-
 document.querySelector('.page').addEventListener('click', (evt) => {
     if(evt.target.classList.contains('popup')){
         closePopup(evt.target);
     }
 });
 
-function closePopupByKeyboard(evt){
-    if(evt.key === "Escape"){
-        closePopup(document.querySelector('.popup_opened'));
-    }
-
-}
-
-
-
 closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
-
+// функции для работы с валидацией на странице
 function addValidation(){
     Array.from(document.forms).forEach( form => {
 
@@ -202,6 +173,8 @@ function removeValidation(){
         formValidator.disableValidation();
     });
 }
+
+preloadCards(initialCards);
 
 addValidation();
 
