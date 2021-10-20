@@ -4,3 +4,8 @@
     height: 282px;
     border-radius: 10px 10px 0 0;
 }
+
+.element__photo:hover{
+    opacity: 0.5;
+    transition: opacity 350ms ease;
+}
