@@ -37,7 +37,7 @@
         _popupPicture.querySelector('.popup__photo-name').textContent = this._textContent;
 
 
-        (() => {this._openPopup(document.querySelector('.popup_type_picture'));})();
+        this._openPopup(_popupPicture);
 
 
     }

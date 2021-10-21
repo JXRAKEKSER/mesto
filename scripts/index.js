@@ -13,7 +13,23 @@ const formProfileInfoContainer = document.querySelector('.popup_type_profile .po
 
 // блок объявления и инициализации общих элементов(контейнеры, секции и т.п. семантически общие вещи)
 const elementsContainer = document.querySelector('.elements');
-const formValidationObjList = [];
+const formProfileValidator = new FormValidator({
+    inputSelector: 'popup__input',
+    submitButtonSelector: 'popup__button-save',
+    inactiveButtonClass: 'popup__button-save_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error-info'
+}, document.querySelector('form[name=formProfileInfo]'));
+const formAddMestoValidator = new FormValidator({
+    inputSelector: 'popup__input',
+    submitButtonSelector: 'popup__button-save',
+    inactiveButtonClass: 'popup__button-save_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error-info'
+}, document.querySelector('form[name=formAddMesto]'));
+//установка валидации форм
+formProfileValidator.enableValidation();
+formAddMestoValidator.enableValidation();
 
 // блок объявления и инициализации элементов добавления места
 const addMestoButton = document.querySelector('.profile__button-add');
@@ -68,6 +84,12 @@ function closePopup (popup) {
 
 }
 
+function closePopupByOverlay(evt){
+    if(evt.target.classList.contains('popup')){
+        closePopup(evt.target);
+    }
+}
+
 function openProfilePopup() {
     inputItemName.value = profileName.textContent;
     inputItemRole.value = profileInfoRole.textContent;
@@ -99,7 +121,7 @@ function closePopupByKeyboard(evt){
     if(evt.key === "Escape"){
         closePopup(document.querySelector('.popup_opened'));
     }
-    disableSubmitButtonForAddMesto();
+
 }
 
 // блок слушателей кнопок
@@ -109,34 +131,21 @@ closeEditProfilePopupButton.addEventListener('click',() => closePopup(popupEditP
 formProfileInfoContainer.addEventListener('submit', saveProfileInfo);
 
 //addMesto
-addMestoButton.addEventListener('click', () => openPopup(addMestoPopup));
+addMestoButton.addEventListener('click', () => {
+    formAddMestoValidator.toogleSubmitButton();
+    openPopup(addMestoPopup);
+
+});
 closeAddMestoPopupButton.addEventListener('click', () => {
     closePopup(addMestoPopup);
-    disableSubmitButtonForAddMesto();
 });
 formAddMestoContainer.addEventListener('submit', (evt) => {
     addMestoCard(evt);
-    disableSubmitButtonForAddMesto();
 });
 
-popupEditProfile.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')){
-        closePopup(evt.target);
-        disableSubmitButtonForAddMesto();
-    }
-});
-addMestoPopup.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')){
-        closePopup(evt.target);
-        disableSubmitButtonForAddMesto();
-    }
-});
-mestoPhotoPopup.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup')){
-        closePopup(evt.target);
-        disableSubmitButtonForAddMesto();
-    }
-});
+popupEditProfile.addEventListener('click', closePopupByOverlay);
+addMestoPopup.addEventListener('click', closePopupByOverlay);
+mestoPhotoPopup.addEventListener('click', closePopupByOverlay);
 
 
 closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
@@ -147,26 +156,10 @@ function addValidation(){
         form.addEventListener('submit', (evt) =>{
             evt.preventDefault();
         });
-        const formValidator = new FormValidator({
-            inputSelector: 'popup__input',
-            submitButtonSelector: 'popup__button-save',
-            inactiveButtonClass: 'popup__button-save_inactive',
-            inputErrorClass: 'popup__input_type_error',
-            errorClass: 'popup__input-error-info'
-        }, form);
-
-        formValidator.enableValidation();
-        formValidationObjList.push(formValidator);
     });
 }
 
-function disableSubmitButtonForAddMesto(){
-    formValidationObjList.forEach(form => {
-        if(form.getForm().name == 'formAddMesto'){
-            form.toogleSubmitButton();
-        }
-    })
-}
+
 
 
 preloadCards(initialCards);
