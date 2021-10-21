@@ -11,26 +11,6 @@ const inputItemRole = document.querySelector('.popup_type_profile input[name=abo
 const inputItemName = document.querySelector('.popup_type_profile input[name=fio]');
 const formProfileInfoContainer = document.querySelector('.popup_type_profile .popup__form');
 
-// блок объявления и инициализации общих элементов(контейнеры, секции и т.п. семантически общие вещи)
-const elementsContainer = document.querySelector('.elements');
-const formProfileValidator = new FormValidator({
-    inputSelector: 'popup__input',
-    submitButtonSelector: 'popup__button-save',
-    inactiveButtonClass: 'popup__button-save_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error-info'
-}, document.querySelector('form[name=formProfileInfo]'));
-const formAddMestoValidator = new FormValidator({
-    inputSelector: 'popup__input',
-    submitButtonSelector: 'popup__button-save',
-    inactiveButtonClass: 'popup__button-save_inactive',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__input-error-info'
-}, document.querySelector('form[name=formAddMesto]'));
-//установка валидации форм
-formProfileValidator.enableValidation();
-formAddMestoValidator.enableValidation();
-
 // блок объявления и инициализации элементов добавления места
 const addMestoButton = document.querySelector('.profile__button-add');
 const addMestoPopup = document.querySelector('.popup_type_card-add');
@@ -41,8 +21,22 @@ const formAddMestoContainer = document.querySelector('.popup_type_card-add .popu
 // блок объявления и инициализации элементов просмотра картинки
 const mestoPhotoPopup = document.querySelector('.popup_type_picture');
 const closeMestoPhotoPopupButton =  document.querySelector('.popup_type_picture .popup__button-close');
-// массив данных для загрузки дефолтных карточек
 
+// блок объявления и инициализации общих элементов(контейнеры, секции и т.п. семантически общие вещи)
+const elementsContainer = document.querySelector('.elements');
+const configValidation = {
+    inputSelector: 'popup__input',
+    submitButtonSelector: 'popup__button-save',
+    inactiveButtonClass: 'popup__button-save_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error-info'
+}
+
+const formProfileValidator = new FormValidator(configValidation, formProfileInfoContainer);
+const formAddMestoValidator = new FormValidator(configValidation, formAddMestoContainer);
+//установка валидации форм
+formAddMestoValidator.enableValidation();
+formProfileValidator.enableValidation();
 
 //функция очистки данных внутри попапа
 function clearFormInputs(popup) {
