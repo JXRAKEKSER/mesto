@@ -1,16 +1,17 @@
-import UserInfo from "../components/UserInfo.js";
-import PopupWithImage from "../components/popup/PopupWithImage.js";
-import PopupWithForm from "../components/popup/PopupWithForm.js";
-import  Card  from "../components/Card.js";
-import FormValidator from "../components/FormValidator.js";
-import Section from "../components/Section.js";
+import UserInfo from "./components/UserInfo.js";
+import PopupWithImage from "./components/popup/PopupWithImage.js";
+import PopupWithForm from "./components/popup/PopupWithForm.js";
+import  Card  from "./components/Card.js";
+import FormValidator from "./components/FormValidator.js";
+import Section from "./components/Section.js";
 import {initialCards,
     editProfileButton,
     formProfileInfoContainer,
     addMestoButton,
     formAddMestoContainer,
     configValidation
-} from "../utils/data.js";
+} from "./utils/data.js";
+import './pages/index.css'
 
 //объекты валидации форм
 const formProfileValidator = new FormValidator(configValidation, formProfileInfoContainer);

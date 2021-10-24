@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
+
     <title>Место</title>
 </head>
 
 <body class="page">
     <header class="header page__header">
-        <img class="header__logo" src="./source/images/svg-images/mesto_logo.svg" alt="Лого" />
+        <img class="header__logo" src="<%=require('./source/images/svg-images/mesto_logo.svg')%>" alt="Лого" />
     </header>
     <main class="content">
         <section class="profile page__profile">
-            <img class="profile__avatar" src="./source/images/png-images/Jak-Iv-Kusto.png" alt="Аватар" />
+            <img class="profile__avatar" src="<%=require('./source/images/png-images/Jak-Iv-Kusto.png')%>" alt="Аватар" />
             <div class="profile-info profile__profile-info">
                 <div class="profile-info__container">
                     <h1 class="profile-info__name">Жак-Ив Кусто</h1>
@@ -75,16 +75,13 @@
     <template id="card">
         <article class="element">
             <button class="element__trash" type="button"></button>
-            <img class="element__photo" src="./source/images/png-images/karachaevsk.png" alt="Фото места" />
+            <img class="element__photo" src="source/images/png-images/karachaevsk.png" alt="Фото места" />
             <div class="element__container">
                 <h2 class="element__title">Карачаево-Черкессия</h2>
                 <button class="element__like" type="button"></button>
             </div>
         </article>
     </template>
-    
-
-    <script type="module" src="./scripts/index.js"></script>
 </body>
 
 </html>
