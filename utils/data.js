@@ -25,3 +25,18 @@ export const initialCards  = [
     }
 ]
 
+export const editProfileButton = document.querySelector('.profile-info__button-edit');
+export const formProfileInfoContainer = document.querySelector('.popup_type_profile .popup__form');
+
+// блок объявления и инициализации элементов добавления места
+export const addMestoButton = document.querySelector('.profile__button-add');
+export const formAddMestoContainer = document.querySelector('.popup_type_card-add .popup__form');
+
+export const configValidation = {
+    inputSelector: 'popup__input',
+    submitButtonSelector: 'popup__button-save',
+    inactiveButtonClass: 'popup__button-save_inactive',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__input-error-info'
+}
+
