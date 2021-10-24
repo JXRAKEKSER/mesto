@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d9959f0-0897-480c-a853-cc2518312319" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/Section.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/UserInfo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/popup/Popup.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/popup/PopupWithForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/popup/PopupWithImage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/Card.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/FormValidator.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/FormValidator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/data.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -300,6 +309,13 @@
     <property name="settings.editor.selected.configurable" value="liveEdit" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components/popup" />
+      <recent name="$PROJECT_DIR$/utils" />
+      <recent name="$PROJECT_DIR$/components" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
@@ -365,7 +381,7 @@
       <workItem from="1634465722012" duration="20916000" />
       <workItem from="1634595053181" duration="3171000" />
       <workItem from="1634676589657" duration="10620000" />
-      <workItem from="1634815192070" duration="2410000" />
+      <workItem from="1634815192070" duration="22075000" />
     </task>
     <servers />
   </component>

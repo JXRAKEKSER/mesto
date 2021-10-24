@@ -1,6 +1,10 @@
-import  Card  from "./Card.js";
-import FormValidator from "./FormValidator.js";
-import {initialCards} from "./data.js";
+import UserInfo from "../components/UserInfo.js";
+import PopupWithImage from "../components/popup/PopupWithImage.js";
+import PopupWithForm from "../components/popup/PopupWithForm.js";
+import  Card  from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
+import {initialCards} from "../utils/data.js";
 // блок объявления и инициализации элементов редактирования информации профиля
 const editProfileButton = document.querySelector('.profile-info__button-edit');
 const closeEditProfilePopupButton = document.querySelector('.popup_type_profile .popup__button-close');
@@ -13,7 +17,7 @@ const formProfileInfoContainer = document.querySelector('.popup_type_profile .po
 
 // блок объявления и инициализации элементов добавления места
 const addMestoButton = document.querySelector('.profile__button-add');
-const addMestoPopup = document.querySelector('.popup_type_card-add');
+//const addMestoPopup = document.querySelector('.popup_type_card-add');
 const closeAddMestoPopupButton = document.querySelector('.popup_type_card-add .popup__button-close');
 const inputMestoName = document.querySelector('input[name=mestoName]');
 const inputMestoURL = document.querySelector('input[name=mestoURL]');
@@ -48,13 +52,13 @@ function clearFormInputs(popup) {
 
 }
 
-function openPopup(popup) {
+/*function openPopup(popup) {
     popup.classList.add('popup_opened');
     document.querySelector('.page').addEventListener('keydown', closePopupByKeyboard);
 
-};
+};*/
 
-function preloadCards(data) {
+/*function preloadCards(data) {
 
 
     data.forEach((dataItem) => {
@@ -65,9 +69,9 @@ function preloadCards(data) {
 
     });
 
-}
+}*/
 
-function closePopup (popup) {
+/*function closePopup (popup) {
     popup.classList.remove('popup_opened');
     document.querySelector('.page').removeEventListener('keydown', closePopupByKeyboard);
 
@@ -76,19 +80,19 @@ function closePopup (popup) {
     clearFormInputs(popup);
 
 
-}
+}*/
 
-function closePopupByOverlay(evt){
+/*function closePopupByOverlay(evt){
     if(evt.target.classList.contains('popup')){
         closePopup(evt.target);
     }
-}
+}*/
 
 function openProfilePopup() {
     inputItemName.value = profileName.textContent;
     inputItemRole.value = profileInfoRole.textContent;
 
-    openPopup(popupEditProfile);
+  //  openPopup(popupEditProfile);
 
 }
 
@@ -97,52 +101,57 @@ function saveProfileInfo(evt) {
 
     profileName.textContent = inputItemName.value;
     profileInfoRole.textContent = inputItemRole.value;
-    closePopup(popupEditProfile);
+  //  closePopup(popupEditProfile);
 
 }
 
 // функция добавления карточки
-function addMestoCard(evt) {
+/*function addMestoCard(evt) {
     evt.preventDefault();
     const card = new Card({ name: inputMestoName.value, link:inputMestoURL.value, openPopup: openPopup}, '#card')
     elementsContainer.prepend(card.createCard());
 
     clearFormInputs(addMestoPopup);
-    closePopup(addMestoPopup);
-};
+   // closePopup(addMestoPopup);
+};*/
 
-function closePopupByKeyboard(evt){
+/*function closePopupByKeyboard(evt){
     if(evt.key === "Escape"){
         closePopup(document.querySelector('.popup_opened'));
     }
 
-}
+}*/
 
 // блок слушателей кнопок
 //profileInfo
-editProfileButton.addEventListener('click',() => openProfilePopup());
-closeEditProfilePopupButton.addEventListener('click',() => closePopup(popupEditProfile));
-formProfileInfoContainer.addEventListener('submit', saveProfileInfo);
+editProfileButton.addEventListener('click',() => {
+    const {fio, aboutYourself} = userInfo.getUserInfo();
+    document.querySelector('input[name=fio]').value = fio;
+    document.querySelector('input[name=aboutYourself]').value = aboutYourself;
+    profileInfoPopup.open()
+});
+//closeEditProfilePopupButton.addEventListener('click',() => closePopup(popupEditProfile));
+/*formProfileInfoContainer.addEventListener('submit', saveProfileInfo);*/
 
 //addMesto
 addMestoButton.addEventListener('click', () => {
-    formAddMestoValidator.toogleSubmitButton();
-    openPopup(addMestoPopup);
+    addMestoPopup.open();
+   // openPopup(addMestoPopup);
 
 });
 closeAddMestoPopupButton.addEventListener('click', () => {
-    closePopup(addMestoPopup);
+   // closePopup(addMestoPopup);
 });
 formAddMestoContainer.addEventListener('submit', (evt) => {
-    addMestoCard(evt);
+   // addMestoCard(evt);
 });
 
-popupEditProfile.addEventListener('click', closePopupByOverlay);
+/*popupEditProfile.addEventListener('click', closePopupByOverlay);
 addMestoPopup.addEventListener('click', closePopupByOverlay);
-mestoPhotoPopup.addEventListener('click', closePopupByOverlay);
+mestoPhotoPopup.addEventListener('click', closePopupByOverlay);*/
 
 
-closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));
+/*closeMestoPhotoPopupButton.addEventListener('click', () => closePopup(mestoPhotoPopup));*/
 // функции для работы с валидацией на странице
 function addValidation(){
     Array.from(document.forms).forEach( form => {
@@ -153,10 +162,31 @@ function addValidation(){
     });
 }
 
+const userInfo = new UserInfo('profile-info__name', 'profile-info__role');
+const popupWithPhoto = new PopupWithImage('popup_type_picture');
+popupWithPhoto.setEventListeners();
+const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData) =>{
+    inputsData.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+    const cardItem = new Card(inputsData, '#card');
+    cardList.addItem(cardItem.createCard());
+});
+addMestoPopup.setEventListeners();
+
+const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo)=>{
+    userInfo.setUserInfo(profileInfo);
+});
+profileInfoPopup.setEventListeners();
+
+
+const cardList = new Section({items:initialCards, renderer: (card) => {
+        card.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+        const cardItem = new Card(card, '#card');
+        return cardItem.createCard();
+    }},'elements');
 
 
 
-preloadCards(initialCards);
+cardList.renderItems();
 
 addValidation();
 

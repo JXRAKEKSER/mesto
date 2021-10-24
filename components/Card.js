@@ -1,9 +1,9 @@
  export default  class Card{
     constructor(data, templateSelector) {
         this._templateSelector = templateSelector;
-        this._src = data.link;
-        this._alt = `Каринка ${data.name}`;
-        this._textContent = data.name;
+        this._src = data.mestoURL;
+        this._alt = `Каринка ${data.mestoName}`;
+        this._textContent = data.mestoName;
         this._openPopup = data.openPopup;
     }
 
@@ -31,13 +31,7 @@
     }
 
     _handleOpenWithPhoto(){
-
-        const _popupPicture = this._card.closest('.page').querySelector('.popup_type_picture');
-        _popupPicture.querySelector('.popup__photo').src = this._src;
-        _popupPicture.querySelector('.popup__photo-name').textContent = this._textContent;
-
-
-        this._openPopup(_popupPicture);
+        this._openPopup(this._src, this._textContent);
 
 
     }
