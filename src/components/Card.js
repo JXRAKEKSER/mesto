@@ -1,9 +1,9 @@
  export default  class Card{
     constructor(data, templateSelector) {
         this._templateSelector = templateSelector;
-        this._src = data.mestoURL;
-        this._alt = `Каринка ${data.mestoName}`;
-        this._textContent = data.mestoName;
+        this._src = data.link || data.mestoURL;
+        this._alt = `Каринка ${data.name || data.mestoName}`;
+        this._textContent = data.name || data.mestoName;
         this._openPopup = data.openPopup;
     }
 

@@ -48,10 +48,10 @@ export default class FormValidator{
                this._changeValidateState(_input);
                this.toogleSubmitButton();
            });
-           _input.addEventListener('change', (evt) => {
+           /*_input.addEventListener('change', (evt) => {
                this._changeValidateState(_input);
                this.toogleSubmitButton();
-           })
+           })*/
         });
     }
 
