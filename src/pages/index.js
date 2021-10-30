@@ -55,8 +55,9 @@ addMestoButton.addEventListener('click', () => {
     addMestoPopup.open();
 });
 const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData) =>{
-    console.log(inputsData)
+    inputsData.likes = [];
     inputsData.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+    inputsData.userId = userInfo.userId;
     cardList.addItem(createCard(inputsData));
 
 });
@@ -70,6 +71,10 @@ popupWithPhoto.setEventListeners();
 
 const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo)=>{
     userInfo.setUserInfo(profileInfo);
+    renderResponse(api.updateUserInfo(profileInfo), (dataObj) => {
+
+    });
+
 });
 profileInfoPopup.setEventListeners();
 
@@ -82,12 +87,13 @@ const api = new Api({ baseURL : 'https://mesto.nomoreparties.co/v1/cohort-29/', 
     }});
 // рендеринг данных пользователя
 renderResponse(api.getUserInfo(), (dataObj) => {
-    userInfo.setUserInfo({fio: dataObj.name, aboutYourself: dataObj.about, avatar: dataObj.avatar});
+    userInfo.setUserInfo({fio: dataObj.name, aboutYourself: dataObj.about, avatar: dataObj.avatar, userId : dataObj._id});
 });
 // рендеринг карточек с сервера и установка слушателей
 renderResponse(api.getPreloadsCards(), (dataObj) =>{
      cardList = new Section({items:dataObj, renderer: (card) => {
             card.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+            card.userId = userInfo.userId;
             return  createCard(card);
         }},'elements');
     cardList.renderItems();

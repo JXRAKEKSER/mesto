@@ -27,4 +27,18 @@ export default class Api {
                 }
             });
     }
+
+    updateUserInfo({fio, aboutYourself}){
+        return fetch(`${this._baseURL}users/me`, {
+            method: 'PATCH',
+            headers: {
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            },
+            body:JSON.stringify({
+                name:`${fio}`,
+                about: `${aboutYourself}`
+            })
+        });
+    }
 }
