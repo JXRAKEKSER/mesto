@@ -1,0 +1,17 @@
+.profile__avatar-edit-overlay{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    opacity: 0;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url("../../../source/images/svg-images/editAvatar.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}

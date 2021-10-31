@@ -8,23 +8,30 @@ import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
 import {renderResponse} from "../utils/apiFunctions.js";
-import {initialCards,
+import {
+    initialCards,
     editProfileButton,
     formProfileInfoContainer,
     addMestoButton,
     formAddMestoContainer,
-    configValidation
+    configValidation,
+    editAvatarButton,
+    formEditAvatarContainer,
+    profilePhoto
 } from "../utils/data.js";
 import './index.css'
-import {data} from "autoprefixer";
+
 const inputFio = document.querySelector('input[name=fio]');
 const inputAboutYourself = document.querySelector('input[name=aboutYourself]');
 //объекты валидации форм
 const formProfileValidator = new FormValidator(configValidation, formProfileInfoContainer);
 const formAddMestoValidator = new FormValidator(configValidation, formAddMestoContainer);
+const formEditAvatarValidator = new FormValidator(configValidation, formEditAvatarContainer)
+
 //установка валидации форм
 formAddMestoValidator.enableValidation();
 formProfileValidator.enableValidation();
+formEditAvatarValidator.enableValidation();
 function addValidation(){
     Array.from(document.forms).forEach( form => {
 
@@ -40,6 +47,7 @@ function createCard(data){
 }
 
 // блок слушателей кнопок
+
 //profileInfo
 editProfileButton.addEventListener('click',() => {
     const {fio, aboutYourself} = userInfo.getUserInfo();
@@ -48,18 +56,30 @@ editProfileButton.addEventListener('click',() => {
     profileInfoPopup.open()
 });
 
+editAvatarButton.addEventListener('click', () =>{
+    formEditAvatarValidator.toogleSubmitButton();
+    editAvatarPopup.open();
+})
+
 let cardList = null;
 //addMesto
 addMestoButton.addEventListener('click', () => {
     formAddMestoValidator.toogleSubmitButton();
     addMestoPopup.open();
 });
-const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData) =>{
-    inputsData.likes = [];
-    inputsData.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
-    inputsData.userId = userInfo.userId;
-    cardList.addItem(createCard(inputsData));
+const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData, evt) =>{
 
+    const { mestoName: name, mestoURL: link} = inputsData;
+    renderResponse(api.postCard({name, link}), (dataObj) =>{
+
+        dataObj.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+        dataObj.userId = userInfo.userId;
+        dataObj.removeCardCallback = api.deleteCard.bind(api);
+        dataObj.addLike = api.addLike.bind(api);
+        dataObj.deleteLike = api.deleteLike.bind(api);
+        cardList.addItem(createCard(dataObj));
+    }, evt)
+    addMestoPopup.close();
 });
 addMestoPopup.setEventListeners()
 
@@ -69,16 +89,27 @@ popupWithPhoto.setEventListeners();
 
 
 
-const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo)=>{
+const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo,evt)=>{
     userInfo.setUserInfo(profileInfo);
     renderResponse(api.updateUserInfo(profileInfo), (dataObj) => {
 
-    });
-
+    }, evt);
+    profileInfoPopup.close();
 });
 profileInfoPopup.setEventListeners();
 
 addValidation();
+
+const editAvatarPopup = new PopupWithForm('popup_type_edit-avatar', (editAvatarInfo, evt)=>{
+
+    renderResponse(api.updateAvatar(editAvatarInfo), (updateProfileData) =>{
+        profilePhoto.src = updateProfileData.avatar;
+    }, evt)
+    editAvatarPopup.close();
+});
+editAvatarPopup.setEventListeners();
+
+
 
 
 const api = new Api({ baseURL : 'https://mesto.nomoreparties.co/v1/cohort-29/', headers:{
@@ -94,6 +125,9 @@ renderResponse(api.getPreloadsCards(), (dataObj) =>{
      cardList = new Section({items:dataObj, renderer: (card) => {
             card.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
             card.userId = userInfo.userId;
+            card.removeCardCallback = api.deleteCard.bind(api);
+            card.addLike = api.addLike.bind(api);
+            card.deleteLike = api.deleteLike.bind(api);
             return  createCard(card);
         }},'elements');
     cardList.renderItems();

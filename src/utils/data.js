@@ -40,3 +40,8 @@ export const configValidation = {
     errorClass: 'popup__input-error-info'
 }
 
+export const openedPopup = document.querySelector('.popup_opened');
+export const editAvatarButton = document.querySelector('.profile__avatar-edit-overlay');
+export const profilePhoto = document.querySelector('.profile__avatar');
+export  const formEditAvatarContainer = document.querySelector('.popup_type_edit-avatar .popup__form');
+

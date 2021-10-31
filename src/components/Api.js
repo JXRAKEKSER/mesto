@@ -41,4 +41,59 @@ export default class Api {
             })
         });
     }
+
+    postCard({name, link}){
+        return fetch(`${this._baseURL}cards`, {
+            method: 'POST',
+            headers:{
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            },
+            body:JSON.stringify({
+                name:`${name}`,
+                link:`${link}`
+            })
+        });
+    }
+    deleteCard(_id){
+        return fetch(`${this._baseURL}cards/${_id}`, {
+            method:'DELETE',
+            headers:{
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            }
+        });
+    }
+
+    addLike(_id){
+        return fetch(`${this._baseURL}cards/likes/${_id}`, {
+            method:'PUT',
+            headers:{
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            }
+        });
+    }
+    deleteLike(_id){
+        return fetch(`${this._baseURL}cards/likes/${_id}`, {
+            method:'DELETE',
+            headers:{
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            }
+        });
+    }
+    updateAvatar({avatar}){
+        return fetch(`${this._baseURL}users/me/avatar`, {
+            method: 'PATCH',
+            headers: {
+                authorization: this._headers.authorization,
+                'Content-type': 'application/json'
+            },
+            body:JSON.stringify({
+                    avatar: `${avatar}`
+                }
+            )
+        });
+    }
 }

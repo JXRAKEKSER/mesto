@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d9959f0-0897-480c-a853-cc2518312319" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/blocks/element/__like-container/element__like-container.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/blocks/element/__like-counter/element__like-counter.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/blocks/element/__trash/_hide/element__trash_hide.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/blocks/popup/_loading/popup_loading.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/blocks/profile/__avatar-container/profile__avatar-container.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/blocks/profile/__avatar-edit-overlay/profile__avatar-edit-overlay.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/blocks/profile/__avatar/profile__avatar.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/blocks/profile/__avatar/profile__avatar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Card.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Card.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/UserInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/UserInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/popup/PopupWithForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/popup/PopupWithForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/apiFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/apiFunctions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/data.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -387,7 +390,7 @@
       <workItem from="1635091938848" duration="11616000" />
       <workItem from="1635173831145" duration="91000" />
       <workItem from="1635542467116" duration="13223000" />
-      <workItem from="1635561237646" duration="12835000" />
+      <workItem from="1635561237646" duration="40482000" />
     </task>
     <servers />
   </component>
