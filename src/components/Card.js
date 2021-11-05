@@ -1,5 +1,4 @@
-import {renderResponse} from "../utils/apiFunctions.js";
-import PopupWithForm from "./popup/PopupWithForm.js";
+
 
 export default  class Card{
     constructor(data, templateSelector) {
@@ -21,6 +20,7 @@ export default  class Card{
         this._removeCard = data.removeCardCallback;
         this._addLike = data.addLike;
         this._deleteLike = data.deleteLike;
+        this._renderResponse = data.renderResponse;
     }
 
     _getTemplate(){
@@ -61,12 +61,12 @@ export default  class Card{
     _handleAddLike(){
         this._card.querySelector('.element__like').classList.toggle('element__like_active');
         if(this._card.querySelector('.element__like').classList.contains('element__like_active')){
-            renderResponse(this._addLike(this._cardId), (updatedCardData) =>{
+            this._renderResponse(this._addLike(this._cardId), (updatedCardData) =>{
                 this._card.querySelector('.element__like-counter').textContent = updatedCardData.likes.length;
             });
 
         }else{
-            renderResponse(this._deleteLike(this._cardId), (updatedCardData) =>{
+            this._renderResponse(this._deleteLike(this._cardId), (updatedCardData) =>{
                 this._card.querySelector('.element__like-counter').textContent = updatedCardData.likes.length;
             })
 
@@ -74,25 +74,14 @@ export default  class Card{
 
     }
 
-    _handleRemoveCard(confirmPopup){
-        confirmPopup.open();
+    _handleRemoveCard(){
+       this._removeCard(this._cardId, this._card);
     }
 
     _setEventListeners(){
         if(this._id === this._userId){
             this._card.querySelector('.element__trash').addEventListener('click', () => {
-                let confirmPopup = new PopupWithForm('popup_type_confirm', () =>{
-                    renderResponse(this._removeCard(this._cardId), (data) =>{
-                        console.log(data);
-                        this._card.remove();
-                        this._card = null;
-                        confirmPopup.close();
-                        confirmPopup = null;
-
-                    });
-                });
-                confirmPopup.setEventListeners();
-                this._handleRemoveCard(confirmPopup);
+                this._handleRemoveCard();
             });
         }
         this._card.querySelector('.element__like').addEventListener('click', () => {this._handleAddLike()});

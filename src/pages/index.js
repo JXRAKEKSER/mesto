@@ -3,13 +3,13 @@ import "regenerator-runtime/runtime";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithImage from "../components/popup/PopupWithImage.js";
 import PopupWithForm from "../components/popup/PopupWithForm.js";
+import PopupWithButton from "../components/popup/PopupWithButton.js";
 import  Card  from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
-import {renderResponse} from "../utils/apiFunctions.js";
+import {renderResponse, renderLoading} from "../utils/apiFunctions.js";
 import {
-    initialCards,
     editProfileButton,
     formProfileInfoContainer,
     addMestoButton,
@@ -42,6 +42,12 @@ function addValidation(){
 }
 
 function createCard(data){
+    data.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
+    data.userId = userInfo.userId;
+    data.removeCardCallback = confirmPopup.open.bind(confirmPopup);
+    data.addLike = api.addLike.bind(api);
+    data.deleteLike = api.deleteLike.bind(api);
+    data.renderResponse = renderResponse;
     const cardItem = new Card(data, '#card');
     return  cardItem.createCard();
 }
@@ -72,13 +78,9 @@ const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData, evt)
     const { mestoName: name, mestoURL: link} = inputsData;
     renderResponse(api.postCard({name, link}), (dataObj) =>{
 
-        dataObj.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
-        dataObj.userId = userInfo.userId;
-        dataObj.removeCardCallback = api.deleteCard.bind(api);
-        dataObj.addLike = api.addLike.bind(api);
-        dataObj.deleteLike = api.deleteLike.bind(api);
         cardList.addItem(createCard(dataObj));
     }, evt)
+    renderLoading(false);
     addMestoPopup.close();
 });
 addMestoPopup.setEventListeners()
@@ -90,11 +92,13 @@ popupWithPhoto.setEventListeners();
 
 
 const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo,evt)=>{
-    userInfo.setUserInfo(profileInfo);
-    renderResponse(api.updateUserInfo(profileInfo), (dataObj) => {
 
+    renderResponse(api.updateUserInfo(profileInfo), (dataObj) => {
+        userInfo.setUserInfo(profileInfo);
+        renderLoading(false);
+        profileInfoPopup.close();
     }, evt);
-    profileInfoPopup.close();
+
 });
 profileInfoPopup.setEventListeners();
 
@@ -103,12 +107,24 @@ addValidation();
 const editAvatarPopup = new PopupWithForm('popup_type_edit-avatar', (editAvatarInfo, evt)=>{
 
     renderResponse(api.updateAvatar(editAvatarInfo), (updateProfileData) =>{
-        profilePhoto.src = updateProfileData.avatar;
+        userInfo.setUserInfo({avatar:updateProfileData.avatar});
+        renderLoading(false);
+        editAvatarPopup.close();
     }, evt)
-    editAvatarPopup.close();
+
 });
 editAvatarPopup.setEventListeners();
 
+const confirmPopup = new PopupWithButton('popup_type_confirm', (cardId, cardItem) =>{
+    renderResponse(api.deleteCard(cardId), (data) =>{
+        cardItem.remove();
+        cardItem = null;
+        renderLoading(false);
+        confirmPopup.close();
+    })
+});
+
+confirmPopup.setEventListeners();
 
 
 
@@ -117,21 +133,33 @@ const api = new Api({ baseURL : 'https://mesto.nomoreparties.co/v1/cohort-29/', 
         'Content-Type': 'application/json'
     }});
 // рендеринг данных пользователя
-renderResponse(api.getUserInfo(), (dataObj) => {
-    userInfo.setUserInfo({fio: dataObj.name, aboutYourself: dataObj.about, avatar: dataObj.avatar, userId : dataObj._id});
-});
-// рендеринг карточек с сервера и установка слушателей
-renderResponse(api.getPreloadsCards(), (dataObj) =>{
-     cardList = new Section({items:dataObj, renderer: (card) => {
-            card.openPopup = popupWithPhoto.open.bind(popupWithPhoto);
-            card.userId = userInfo.userId;
-            card.removeCardCallback = api.deleteCard.bind(api);
-            card.addLike = api.addLike.bind(api);
-            card.deleteLike = api.deleteLike.bind(api);
-            return  createCard(card);
-        }},'elements');
-    cardList.renderItems();
-});
+const userInfoPromise = api.getUserInfo();
+const preloadsCardsPromise = api.getPreloadsCards();
+const preloadPromises = [userInfoPromise, preloadsCardsPromise];
+
+Promise.all(preloadPromises)
+    .then((responses) => Promise.all(responses.map( response => {
+       if(response.ok) {
+          return response.json()
+       }else{
+           Promise.reject(`${response.status} по url ${response.url}`);
+       }
+    })))
+        .then((dataObjects) => {
+
+            dataObjects.forEach( dataObj =>{
+                if(dataObj.length){
+                    cardList = new Section({items:dataObj, renderer: (card) => {
+                            return  createCard(card);
+                        }},'elements');
+                    cardList.renderItems();
+                }
+                else{
+                    userInfo.setUserInfo({fio: dataObj.name, aboutYourself: dataObj.about, avatar: dataObj.avatar, userId : dataObj._id});
+                }
+            });
+        })
+        .catch((error) => console.log(`Ошибка запроса ${error}`));
 
 
 
