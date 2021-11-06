@@ -28,6 +28,8 @@ export default class Api {
             });
     }
 
+
+
     updateUserInfo({fio, aboutYourself}){
         return fetch(`${this._baseURL}users/me`, {
             method: 'PATCH',

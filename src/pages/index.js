@@ -79,9 +79,10 @@ const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData, evt)
     renderResponse(api.postCard({name, link}), (dataObj) =>{
 
         cardList.addItem(createCard(dataObj));
+        addMestoPopup.close();
     }, evt)
     renderLoading(false);
-    addMestoPopup.close();
+
 });
 addMestoPopup.setEventListeners()
 
@@ -145,19 +146,14 @@ Promise.all(preloadPromises)
            Promise.reject(`${response.status} по url ${response.url}`);
        }
     })))
-        .then((dataObjects) => {
+        .then(([userData, cardData]) => {
 
-            dataObjects.forEach( dataObj =>{
-                if(dataObj.length){
-                    cardList = new Section({items:dataObj, renderer: (card) => {
-                            return  createCard(card);
-                        }},'elements');
-                    cardList.renderItems();
-                }
-                else{
-                    userInfo.setUserInfo({fio: dataObj.name, aboutYourself: dataObj.about, avatar: dataObj.avatar, userId : dataObj._id});
-                }
-            });
+            cardList = new Section({items:cardData, renderer: (card) => {
+                return  createCard(card);
+            }},'elements');
+            cardList.renderItems();
+            userInfo.setUserInfo({fio: userData.name, aboutYourself: userData.about, avatar: userData.avatar, userId : userData._id});
+
         })
         .catch((error) => console.log(`Ошибка запроса ${error}`));
 
