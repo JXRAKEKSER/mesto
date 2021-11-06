@@ -8,7 +8,7 @@ import  Card  from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import Api from "../components/Api.js";
-import {renderResponse, renderLoading} from "../utils/apiFunctions.js";
+import {renderResponse} from "../utils/apiFunctions.js";
 import {
     editProfileButton,
     formProfileInfoContainer,
@@ -73,15 +73,15 @@ addMestoButton.addEventListener('click', () => {
     formAddMestoValidator.toogleSubmitButton();
     addMestoPopup.open();
 });
-const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData, evt) =>{
+const addMestoPopup = new PopupWithForm('popup_type_card-add', (inputsData) =>{
 
     const { mestoName: name, mestoURL: link} = inputsData;
     renderResponse(api.postCard({name, link}), (dataObj) =>{
 
         cardList.addItem(createCard(dataObj));
         addMestoPopup.close();
-    }, evt)
-    renderLoading(false);
+    })
+
 
 });
 addMestoPopup.setEventListeners()
@@ -92,26 +92,25 @@ popupWithPhoto.setEventListeners();
 
 
 
-const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo,evt)=>{
+const profileInfoPopup = new PopupWithForm('popup_type_profile', (profileInfo)=>{
 
     renderResponse(api.updateUserInfo(profileInfo), (dataObj) => {
         userInfo.setUserInfo(profileInfo);
-        renderLoading(false);
         profileInfoPopup.close();
-    }, evt);
+    });
 
 });
 profileInfoPopup.setEventListeners();
 
 addValidation();
 
-const editAvatarPopup = new PopupWithForm('popup_type_edit-avatar', (editAvatarInfo, evt)=>{
+const editAvatarPopup = new PopupWithForm('popup_type_edit-avatar', (editAvatarInfo)=>{
 
     renderResponse(api.updateAvatar(editAvatarInfo), (updateProfileData) =>{
         userInfo.setUserInfo({avatar:updateProfileData.avatar});
-        renderLoading(false);
+
         editAvatarPopup.close();
-    }, evt)
+    })
 
 });
 editAvatarPopup.setEventListeners();
@@ -120,7 +119,7 @@ const confirmPopup = new PopupWithButton('popup_type_confirm', (cardId, cardItem
     renderResponse(api.deleteCard(cardId), (data) =>{
         cardItem.remove();
         cardItem = null;
-        renderLoading(false);
+
         confirmPopup.close();
     })
 });
@@ -139,21 +138,13 @@ const preloadsCardsPromise = api.getPreloadsCards();
 const preloadPromises = [userInfoPromise, preloadsCardsPromise];
 
 Promise.all(preloadPromises)
-    .then((responses) => Promise.all(responses.map( response => {
-       if(response.ok) {
-          return response.json()
-       }else{
-           Promise.reject(`${response.status} по url ${response.url}`);
-       }
-    })))
-        .then(([userData, cardData]) => {
-
+    .then(([userData, cardData]) => {
+            userInfo.setUserInfo({fio: userData.name, aboutYourself: userData.about, avatar: userData.avatar, userId : userData._id});
             cardList = new Section({items:cardData, renderer: (card) => {
+
                 return  createCard(card);
             }},'elements');
             cardList.renderItems();
-            userInfo.setUserInfo({fio: userData.name, aboutYourself: userData.about, avatar: userData.avatar, userId : userData._id});
-
         })
         .catch((error) => console.log(`Ошибка запроса ${error}`));
 

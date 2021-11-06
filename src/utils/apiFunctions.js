@@ -4,23 +4,18 @@ export function renderLoading(isLoading){
     const openedPopup = document.querySelector('.popup_opened');
     if(isLoading && openedPopup){
         openedPopup.querySelector('input[type=submit]').value = `${openedPopup.querySelector('input[type=submit]').value}...`;
-    }else if(!isLoading && openedPopup) {
-        openedPopup.querySelector('input[type=submit]').value = openedPopup.querySelector('input[type=submit]').value.split('...')[0];
+    }else if(!isLoading) {
+        Array.from(document.forms).forEach(form => {
+            form.querySelector('input[type=submit]').value = form.querySelector('input[type=submit]').value.split('...')[0];
+        });
     }
 }
 
-export function renderResponse(responsePromise, callback, evt){
+export function renderResponse(responsePromise, callback){
 
         renderLoading(true);
 
     responsePromise
-        .then((response) => {
-        if(response.ok){
-            return response.json();
-        }
-
-     return Promise.reject(response.status);
-    })
         .then((data) => {
             callback(data);
         })
@@ -28,9 +23,7 @@ export function renderResponse(responsePromise, callback, evt){
             console.log(`Ошибка ${error}`);
         })
         .finally(() => {
-
                 renderLoading(false)
-
         });
 }
 

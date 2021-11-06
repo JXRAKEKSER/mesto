@@ -2,9 +2,15 @@ export default class Api {
     constructor(options) {
         this._baseURL = options.baseURL;
         this._headers = options.headers;
+        this._checkResponse = this._checkResponse.bind(this)
     }
 
-
+    _checkResponse(response){
+        if(response.ok){
+            return response.json();
+        }
+        return Promise.reject(`${response.status} and ${response.url}`);
+    }
 
     getUserInfo() {
         return fetch(`${this._baseURL}users/me`,
@@ -14,7 +20,7 @@ export default class Api {
                     authorization: this._headers.authorization,
                     'Content-type': 'application/json'
                 }
-            });
+            }).then(this._checkResponse);
     }
 
     getPreloadsCards(){
@@ -25,7 +31,7 @@ export default class Api {
                     authorization: this._headers.authorization,
                     'Content-type': 'application/json'
                 }
-            });
+            }).then(this._checkResponse)
     }
 
 
@@ -41,11 +47,11 @@ export default class Api {
                 name:`${fio}`,
                 about: `${aboutYourself}`
             })
-        });
+        }).then(this._checkResponse);
     }
 
     postCard({name, link}){
-        return fetch(`${this._baseURL}cards`, {
+        return  fetch(`${this._baseURL}cards`, {
             method: 'POST',
             headers:{
                 authorization: this._headers.authorization,
@@ -55,7 +61,7 @@ export default class Api {
                 name:`${name}`,
                 link:`${link}`
             })
-        });
+        }).then(this._checkResponse);
     }
     deleteCard(_id){
         return fetch(`${this._baseURL}cards/${_id}`, {
@@ -64,7 +70,7 @@ export default class Api {
                 authorization: this._headers.authorization,
                 'Content-type': 'application/json'
             }
-        });
+        }).then(this._checkResponse);
     }
 
     addLike(_id){
@@ -74,7 +80,7 @@ export default class Api {
                 authorization: this._headers.authorization,
                 'Content-type': 'application/json'
             }
-        });
+        }).then(this._checkResponse);
     }
     deleteLike(_id){
         return fetch(`${this._baseURL}cards/likes/${_id}`, {
@@ -83,7 +89,7 @@ export default class Api {
                 authorization: this._headers.authorization,
                 'Content-type': 'application/json'
             }
-        });
+        }).then(this._checkResponse);
     }
     updateAvatar({avatar}){
         return fetch(`${this._baseURL}users/me/avatar`, {
@@ -96,6 +102,6 @@ export default class Api {
                     avatar: `${avatar}`
                 }
             )
-        });
+        }).then(this._checkResponse);
     }
 }
